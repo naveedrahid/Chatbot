@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  database:
+    image: pgvector/pgvector:pg15
+    container_name: leadxforms_db
+    restart: always
+    environment:
+      POSTGRES_DB: leadxforms_rag
+      POSTGRES_USER: rag_user
+      POSTGRES_PASSWORD: Admin12345
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+
+  n8n:
+    image: n8nio/n8n
+    container_name: leadxforms_n8n
+    restart: always
+    environment:
+      N8N_BASIC_AUTH_USER: user
+      N8N_BASIC_AUTH_PASSWORD: password
+      N8N_HOST: localhost
+      N8N_PORT: 5678
+      VUE_APP_N8N_PROTOCOL: http
+      VUE_APP_N8N_HOST: localhost
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+    depends_on:
+      - database
+      - ollama
+
+  ollama:
+    image: ollama/ollama
+    container_name: leadxforms_ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_data:/root/.ollama

@@ -1,0 +1,22 @@
+# .gitignore: Files/Folders to ignore for Git push
+
+# --- 1. Docker Volume Data ---
+# These folders contain large database files and LLM model weights.
+# They must NOT be pushed to Git. They are automatically created by Docker.
+db_data/
+n8n_data/
+ollama_data/
+
+# --- 2. Environment and Security ---
+# If you use a separate .env file for secrets (Highly recommended in production)
+.env
+*.env
+
+# --- 3. Logs and Common OS Files ---
+logs/
+*.log
+.DS_Store # Mac OS
+Thumbs.db # Windows
+
+# --- 4. Other Build/Temp Files (Optional but good practice)
+temp/
